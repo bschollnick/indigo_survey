@@ -1,0 +1,23 @@
+<?xml version="1.0"?> 
+<MenuItems> 
+	<MenuItem id="survey_1pass_manualUpdate"> 
+		<Name>Run a Single Pass Survey</Name>
+		<CallbackMethod>survey_1pass_manualUpdate</CallbackMethod> 
+	</MenuItem>
+	<MenuItem id="survey_3pass_manualUpdate"> 
+		<Name>Run a 3 Pass Survey</Name>
+		<CallbackMethod>survey_3pass_manualUpdate</CallbackMethod> 
+	</MenuItem>
+	<MenuItem id="survey_5pass_manualUpdate"> 
+		<Name>Run a 5 Pass Survey</Name>
+		<CallbackMethod>survey_5pass_manualUpdate</CallbackMethod> 
+	</MenuItem>
+	<MenuItem id="survey_10pass_manualUpdate"> 
+		<Name>Run a 10 Pass Survey</Name>
+		<CallbackMethod>survey_10pass_manualUpdate</CallbackMethod> 
+	</MenuItem>
+	<MenuItem id="survey_20pass_manualUpdate"> 
+		<Name>Run a 20 Pass Survey</Name>
+		<CallbackMethod>survey_20pass_manualUpdate</CallbackMethod> 
+	</MenuItem>
+</MenuItems>

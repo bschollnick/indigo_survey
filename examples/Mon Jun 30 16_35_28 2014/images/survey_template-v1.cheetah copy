@@ -1,0 +1,100 @@
+<html>
+<head>
+<script src="./images/$jquery_filename"></script>
+<script src="./images/$morris_filename"></script>
+<script src="./images/$raphael_filename"></script>
+<title>Report for $number_of_devices devices on $timestamp</title>
+</head>
+
+<html>
+Total Number of Devices - $number_of_devices<br>
+<P>
+Jump to a specific Device<p>
+#for $x in $sorted_order:
+    #set $dev = $x[1]
+    <a href="$dev">$device_data[$dev]["data"].name ($device_data[$dev]["data"].address)</a><br>
+#end for
+<a href="results">Quick Link to the Results</a><br>
+<p>
+<hr>
+#set $total_average = 0
+#for $x in $sorted_order:
+    <p>
+    #set $dev = $x[1]
+    <table border=0 width="95%">
+        <tr>
+            <td width="30%" align=center><a href="#$dev"/>
+                $device_data[$dev]["data"].name<br>
+                $device_data[$dev]["data"].description
+            </td>
+            <td width="10%">
+                <center>Insteon Addr</center>
+                <center>$device_data[$dev]["data"].address</center>
+                <br>
+                <center>Firmware</center>
+                <center>$device_data[$dev]["data"].version</center>
+            </td>
+            <td rowspan=2 width="60%" align=center>
+            <div id="$device_data[$dev]['data'].address"></div>
+            <script>
+            Morris.Bar({
+              element: '$device_data[$dev]["data"].address',
+              data: [
+              #for $loop in $range(1, $number_of_passes+1):
+                    {y:'Pass $loop', a:$device_data[$dev][$loop]},
+              #end for
+              ],
+              xkey: 'y',
+              ykeys: ['a'],
+              labels: ['Response Time']
+            });    
+            </script>        
+            </td>
+        </tr>
+        <tr>
+            <td colspan=2 align=center>
+            #set $ping_ms = 0.0
+            #set $successful_ping_count = 0
+            <hr width="90%">
+            <table border=0 width="99%">
+            <TR>
+                <TD align=center>Pass #</TD>
+                <td align=center>Response Time</td>
+                <td align=center>Estimated Hops</td>
+            </TR>
+            #for $loop in $range(1, $number_of_passes+1):
+                #set $ping_ms += float($device_data[$dev][$loop])
+                #if $device_data[$dev][$loop] < 6
+                    #set $successful_ping_count += 1
+                #end if
+                <Tr>
+                    <TD align=center>$loop</td>
+                    <td align=center>$device_data[$dev][$loop] Seconds</td>
+                    <td align=center>$hops($device_data[$dev][$loop])</td>
+                </tr>        
+            #end for
+            </table>
+            <hr width="90%">
+            <p>
+            Successful Pings - $successful_ping_count<br>
+            #set $avg = float(float($ping_ms) / float($number_of_passes))*10000.0
+            #set $avg = int($avg) / 10000.0
+            Average Response Time - $avg<br>
+            #set $total_average += $avg
+            #set $rel_per = int((float($successful_ping_count) / $number_of_passes) * 10000)/100
+            Reliability Percentage - $rel_per<br>
+            </td>
+        </tr>
+    </table>
+    <hr>
+#end for
+<a href="#results"/>
+Total Elapsed Time (in Seconds) - $time_elapsed<br>
+Total Number of Devices - $number_of_devices<br>
+Total Successful Pings - $total_success<br>
+Total Failed Pings - $total_failure<br>
+#set $rel_perc = int((float($total_success) / float($number_of_devices * $number_of_passes)) * 10000)/100
+Reliability Percentage (Pings) - $rel_perc<br>
+#set $avg_resp_time = int((float($total_average) / $number_of_devices)*10000.0)/10000.0
+Average Response Time - $avg_resp_time
+</html>

@@ -1,0 +1,75 @@
+<html>
+<head>
+<script src="../images/jquery-1.11.1.min.js"></script>
+<script src="../images/morris.min.js"></script>
+<script src="../images/raphael-min.js"></script>
+<title>Report for 36 devices on Mon Jun 30 16:35:28 2014</title>
+</head>
+
+<html>
+<p>
+<hr>
+    <table border=0 width="95%">
+        <tr>
+            <td width="30%" align=center>
+                downstairs kitchen light<br>
+                
+            </td>
+            <td width="10%">
+                <center>Insteon Addr</center>
+                <center>22.92.B7</center>
+                <br>
+                <center>Firmware</center>
+                <center>0x41</center>
+            </td>
+            <td rowspan=2 width="60%" align=center>
+            <div id="22.92.B7"></div>
+            <script>
+            Morris.Bar({
+              element: '22.92.B7',
+              data: [
+                    {y:'Pass 1', a:560},
+                    {y:'Pass 2', a:256},
+                    {y:'Pass 3', a:257},
+              ],
+              xkey: 'y',
+              ykeys: ['a'],
+              ymax:3,
+              ymin:0,
+              labels: ['Response Time']
+            });    
+            </script>        
+            </td>
+        </tr>
+        <tr>
+            <td colspan=2 align=center>
+            <hr width="90%">
+            <table border=0 width="99%">
+            <TR>
+                <TD align=center>Pass #</TD>
+                <td align=center>Response Time</td>
+                <td align=center>Estimated Hops</td>
+            </TR>
+                <Tr>
+                    <TD align=center><font color="#FFCC99">1</font></td>
+                    <td align=center><font color="#FFCC99">560 Milliseconds</font></td>
+                    <td align=center><font color="#FFCC99">4</font></td>
+                </tr>        
+                <Tr>
+                    <TD align=center><font color="#3333CC">2</font></td>
+                    <td align=center><font color="#3333CC">256 Milliseconds</font></td>
+                    <td align=center><font color="#3333CC">2</font></td>
+                </tr>        
+                <Tr>
+                    <TD align=center><font color="#3333CC">3</font></td>
+                    <td align=center><font color="#3333CC">257 Milliseconds</font></td>
+                    <td align=center><font color="#3333CC">2</font></td>
+                </tr>        
+            </table>
+            <hr width="90%">
+            <p>
+            </td>
+        </tr>
+    </table>
+    <hr>
+</html>

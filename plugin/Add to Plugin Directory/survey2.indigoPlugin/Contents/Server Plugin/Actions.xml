@@ -1,0 +1,7 @@
+<?xml version="1.0"?>
+<Actions>
+	<Action id="manualDeviceUpdate"> 
+		<Name>Run a Survey</Name> 
+		<CallbackMethod>manualDeviceUpdate</CallbackMethod> 
+	</Action>
+</Actions>

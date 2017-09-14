@@ -1,0 +1,172 @@
+<html>
+<head>
+    <script src="./images/jquery-1.11.1.min.js"></script>
+    <script src="./images/media/js/jquery.dataTables.min.js"></script>
+    <link rel="stylesheet" type="text/css" href="./images/media/css/jquery.dataTables.min.css">
+    <script src="./images/morris.min.js"></script>
+    <script src="./images/raphael-min.js"></script>
+    <title>Report for $number_of_devices devices on $timestamp</title>
+</head>
+<body>
+    <h1>Report for $number_of_devices devices on $timestamp</h1>
+
+<h2>Network Results</h2>
+<table border=0>
+    <tr>
+        <td align=center>
+            Testing Time<br>(in Seconds)
+        </td>
+        <td align=center>
+            $time_elapsed
+        </td>
+    </tr>
+    <tr>
+        <td align=center>
+            Total Number of<br>Devices Tested
+        </td>
+        <td align=center>
+            $number_of_devices
+        </td>
+    </tr>
+    <tr>
+        <td align=center>
+            Number of Successful Pings<br>vs Failed Pings
+        </td>
+        <td align=center>
+            $total_success  vs <font color="red">$total_failure</font>
+        </td>
+    </tr>
+    <tr>
+        <td align=center>
+            Estimated Network Reliability
+        </td>
+        <td align=center>
+            #set $reliability=int((float($total_success) /  float($total_success+$total_failure)) * 10000)/100.0
+            $reliability
+        </td>
+    </tr>
+</table>
+<hr>
+<h2> Testing Overview </h2>
+<br>
+Click on the Device Name to display the detailed testing results for that device.<br>
+<table id="index" class="display" cellspacing="0" width="100%">
+    <thead>
+        <tr>
+            <th align="center">Name</th>
+            <th align="center">Address</th>
+            <th align="center">Protocol</th>
+            <th align="center">Model</th>
+            <th align="center">Average<br>Ping Time</th>
+            <th align="center">Successful<br>Pings</th>
+            <th align="center">Failed<br>Pings</th>
+            <th align="center">Ping<br>Reliability</th>
+            <th align="center">Hop Heat<br>Map</th>
+        </tr>
+    </thead>
+    <tfoot>
+        <tr>
+            <th align="center">Name</th>
+            <th align="center">Address</th>
+            <th align="center">Protocol</th>
+            <th align="center">Model</th>
+            <th align="center">Average<br>Ping Time</th>
+            <th align="center">Successful<br>Pings</th>
+            <th align="center">Failed<br>Pings</th>
+            <th align="center">Ping<br>Reliability</th>
+            <th align="center">Hop Heat<br>Map</th>
+        </tr>
+    </tfoot>
+
+    <tbody>
+    #for $x in $sorted_order:
+        #set $dev = $device_data[$x[1]]
+        #set $failed_count = $dev["pings"]["failure"]
+        #if $model_filter <> None
+            #set $dev_model = $dev["data"].model.strip().upper()
+            #if $dev_model <> $model_filter.strip().upper()
+                #continue
+            #end if
+        #end if
+        <tr>
+            <td align=center>
+                #if $failed_count <> 0
+                    <font color="red">
+                #else
+                    <font color="green">
+                #end if
+                #set $weblink = "./devices/%s.html" % $dev["data"].address
+                <a href="$weblink" target="_blank">$dev["data"].name</a>
+                </font>
+            </td>
+            <td align=center>
+                #if $failed_count <> 0
+                    <font color="red">
+                #else
+                    <font color="green">
+                #end if
+                $dev["data"].address
+                </font>
+            </td>
+            <td align=center>
+                $dev["data"].protocol
+            </td>
+            <td align=center>
+                $dev["data"].model
+            </td>
+            <td align=center>
+                #set $avg       = int((float($dev["pings"]["elapsedtime"]) / $dev["pings"]["pingcount"])*10000)/10000.0
+                #if $failed_count <> 0
+                    <font color="red"><B>
+                #else
+                    <font color="green">
+                #end if
+                $avg
+                </b></font>
+            </td>
+            <td align=center>
+                #if $failed_count <> 0
+                    <font color="red">
+                #else
+                    <font color="green">
+                #end if
+                $dev["pings"]["success"]
+                </font>
+            </td>
+            <td align=center>
+                #if $failed_count <> 0
+                    <font color="red"><b>
+                #else
+                    <font color="green">
+                #end if
+                $dev["pings"]["failure"]
+                </b></font>
+            </td>
+            <td align=center>
+                #set $reliability=int((float($dev["pings"]["success"]) /  $dev["pings"]["pingcount"]) * 10000)/100.0
+                $reliability %
+            </td>
+            <td align=center>
+                    #for $loop in $range(1, $number_of_passes+1):
+                        #set font_color=$hop_colors($dev["pings"]["passes"][$loop])
+                        <font color="$font_color" size=+1>
+                        #if float($dev["pings"]["passes"][$loop]) < 2000
+                            *
+                        #else
+                            -
+                        #end if
+                        </font>
+                    #end for
+            </td>
+        </tr>
+    #end for
+    </tbody>
+</table>
+<Script>
+
+
+#set $datatables = $datatables % "index"
+$datatables
+</script>
+</body>
+</html>

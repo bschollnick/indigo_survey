@@ -148,7 +148,7 @@ class Plugin(indigo.PluginBase):
    $('#%s').dataTable({
        "aaSorting"	: [ [0,'desc']],
        "sDom"		:'ipflrt',
-       "paging"     : false, 
+       "paging"     : false,
        "oLanguage"	: {
             "sLengthMenu": "Display _MENU_ devices per page",
             "sZeroRecords": "Nothing found - sorry",
@@ -203,7 +203,7 @@ class Plugin(indigo.PluginBase):
 
                 if not device.protocol in [indigo.kProtocol.Insteon, indigo.kProtocol.ZWave]:
                     continue
-                    
+
                 if model != None and \
                    device.model.strip().upper() != model.strip().upper():
                     continue
@@ -211,12 +211,12 @@ class Plugin(indigo.PluginBase):
                 if device.batteryLevel is not None:
                     #indigo.server.log("The device (%s) has a Battery (it might be asleep)" % (device.name))
                     continue
-                    
+
                 if device.globalProps.has_key ("com.perceptiveautomation.indigoplugin.zwave"):
                      zwaveProps = device.globalProps["com.perceptiveautomation.indigoplugin.zwave"]
                      if zwaveProps.get("zwDevSubIndex", None) != 0:
 #                         indigo.server.log("This is a secondary device %s, skipping..." % device.name)
-                         continue                
+                         continue
 
                 if not device.address in self.list_of_devices.keys():
                     self.sorted_order.append((device.name, device.address))
@@ -259,7 +259,7 @@ class Plugin(indigo.PluginBase):
 
                 else:
                     reply = None
-                    self.sleep (1)
+                    self.sleep (2)
                     indigo.server.waitUntilIdle()
                     result = indigo.device.ping (device, suppressLogging=True)
                     if result["Success"]:
@@ -299,8 +299,8 @@ class Plugin(indigo.PluginBase):
         except self.StopThread:
             pass
 
-    def make_individual_reports(self, 
-                                number_of_passes=1, 
+    def make_individual_reports(self,
+                                number_of_passes=1,
                                 timestamp=time.ctime()):
         for name, addr in self.sorted_order:
             self.make_report(number_of_passes=number_of_passes,
